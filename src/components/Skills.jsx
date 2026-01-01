@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import { FaExternalLinkAlt, FaBook, FaGraduationCap, FaCode } from 'react-icons/fa'
+import { skillLinks } from '../data/links'
+import { useState } from 'react'
 
 const skillCategories = {
   'Programming Languages': {
@@ -36,6 +39,56 @@ const skillCategories = {
   }
 }
 
+function SkillTag({ skill, color, inView, delay }) {
+  const [showTooltip, setShowTooltip] = useState(false)
+  const links = skillLinks[skill] || {}
+
+  return (
+    <div className="skill-tag-wrapper" style={{ position: 'relative' }}>
+      <motion.a
+        href={links.official || '#'}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="skill-tag"
+        style={{ '--skill-color': color }}
+        initial={{ opacity: 0, scale: 0 }}
+        animate={inView ? { opacity: 1, scale: 1 } : {}}
+        transition={{ delay, duration: 0.3 }}
+        whileHover={{ scale: 1.1, y: -3 }}
+        onMouseEnter={() => setShowTooltip(true)}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
+        {skill}
+        <FaExternalLinkAlt className="skill-link-icon" />
+      </motion.a>
+      
+      {showTooltip && links.official && (
+        <motion.div
+          className="skill-tooltip"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="tooltip-links">
+            <a href={links.official} target="_blank" rel="noopener noreferrer">
+              <FaCode /> Official Docs
+            </a>
+            {links.tutorial && (
+              <a href={links.tutorial} target="_blank" rel="noopener noreferrer">
+                <FaBook /> Tutorial
+              </a>
+            )}
+            {links.learn && (
+              <a href={links.learn} target="_blank" rel="noopener noreferrer">
+                <FaGraduationCap /> Learn
+              </a>
+            )}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  )
+}
+
 function Skills() {
   const [ref, inView] = useInView({
     threshold: 0.1,
@@ -54,6 +107,16 @@ function Skills() {
           Key <span className="gradient-text">Skills</span>
         </motion.h2>
 
+        <motion.p
+          className="section-subtitle"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: '3rem', opacity: 0.8 }}
+        >
+          Click on any skill to explore official documentation, tutorials, and learning resources
+        </motion.p>
+
         <div className="skills-grid">
           {Object.entries(skillCategories).map(([category, data], categoryIndex) => (
             <motion.div
@@ -69,17 +132,13 @@ function Skills() {
               </div>
               <div className="skill-tags">
                 {data.skills.map((skill, index) => (
-                  <motion.span
+                  <SkillTag
                     key={skill}
-                    className="skill-tag"
-                    style={{ '--skill-color': data.color }}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={inView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ delay: categoryIndex * 0.1 + index * 0.05 }}
-                    whileHover={{ scale: 1.1, y: -3 }}
-                  >
-                    {skill}
-                  </motion.span>
+                    skill={skill}
+                    color={data.color}
+                    inView={inView}
+                    delay={categoryIndex * 0.1 + index * 0.05}
+                  />
                 ))}
               </div>
             </motion.div>
@@ -111,4 +170,3 @@ function Skills() {
 }
 
 export default Skills
-

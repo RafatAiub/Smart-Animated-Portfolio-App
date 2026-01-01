@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { FaBriefcase, FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa'
+import { FaBriefcase, FaCalendarAlt, FaMapMarkerAlt, FaExternalLinkAlt, FaCode } from 'react-icons/fa'
+import { companyLinks, skillLinks } from '../data/links'
 
 const experiences = [
   {
@@ -61,54 +62,77 @@ function Experience() {
         </motion.h2>
 
         <div className="timeline">
-          {experiences.map((exp, index) => (
-            <motion.div
-              key={index}
-              className="timeline-item"
-              initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
-              animate={inView ? { opacity: 1, x: 0 } : {}}
-              transition={{ delay: index * 0.2, duration: 0.6 }}
-            >
-              <div className="timeline-marker"></div>
+          {experiences.map((exp, index) => {
+            const companyLink = companyLinks[exp.company]
+            return (
               <motion.div
-                className="experience-card"
-                whileHover={{ scale: 1.02, y: -5 }}
+                key={index}
+                className="timeline-item"
+                initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
               >
-                <div className="experience-header">
-                  <div>
-                    <h3 className="experience-title">{exp.title}</h3>
-                    <div className="experience-company">
-                      <FaBriefcase className="icon" />
-                      <span>{exp.company}</span>
-                      <FaMapMarkerAlt className="icon" />
-                      <span>{exp.location}</span>
+                <div className="timeline-marker"></div>
+                <motion.div
+                  className="experience-card"
+                  whileHover={{ scale: 1.02, y: -5 }}
+                >
+                  <div className="experience-header">
+                    <div>
+                      <h3 className="experience-title">{exp.title}</h3>
+                      <div className="experience-company">
+                        <FaBriefcase className="icon" />
+                        {companyLink ? (
+                          <a href={companyLink} target="_blank" rel="noopener noreferrer" className="company-link">
+                            {exp.company} <FaExternalLinkAlt />
+                          </a>
+                        ) : (
+                          <span>{exp.company}</span>
+                        )}
+                        <FaMapMarkerAlt className="icon" />
+                        <span>{exp.location}</span>
+                      </div>
+                    </div>
+                    <div className="experience-period">
+                      <FaCalendarAlt className="icon" />
+                      <span>{exp.period}</span>
                     </div>
                   </div>
-                  <div className="experience-period">
-                    <FaCalendarAlt className="icon" />
-                    <span>{exp.period}</span>
+                  <ul className="experience-achievements">
+                    {exp.achievements.map((achievement, i) => (
+                      <motion.li
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={inView ? { opacity: 1, x: 0 } : {}}
+                        transition={{ delay: index * 0.2 + i * 0.1 }}
+                      >
+                        {achievement}
+                      </motion.li>
+                    ))}
+                  </ul>
+                  <div className="experience-tech">
+                    {exp.tech.map((tech) => {
+                      const techLinks = skillLinks[tech] || {}
+                      return (
+                        <motion.a
+                          key={tech}
+                          href={techLinks.official || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="tech-badge"
+                          whileHover={{ scale: 1.1, y: -2 }}
+                          title={techLinks.official ? `Learn ${tech}` : tech}
+                        >
+                          {tech}
+                          {techLinks.official && <FaCode className="tech-link-icon" />}
+                        </motion.a>
+                      )
+                    })}
                   </div>
-                </div>
-                <ul className="experience-achievements">
-                  {exp.achievements.map((achievement, i) => (
-                    <motion.li
-                      key={i}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={inView ? { opacity: 1, x: 0 } : {}}
-                      transition={{ delay: index * 0.2 + i * 0.1 }}
-                    >
-                      {achievement}
-                    </motion.li>
-                  ))}
-                </ul>
-                <div className="experience-tech">
-                  {exp.tech.map((tech) => (
-                    <span key={tech} className="tech-badge">{tech}</span>
-                  ))}
-                </div>
+                </motion.div>
               </motion.div>
-            </motion.div>
-          ))}
+            )
+          })}
         </div>
       </div>
     </section>
@@ -116,4 +140,3 @@ function Experience() {
 }
 
 export default Experience
-

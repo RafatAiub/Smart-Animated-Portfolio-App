@@ -12,6 +12,7 @@ const navItems = [
   { id: 'projects', label: 'Projects' },
   { id: 'publications', label: 'Publications' },
   { id: 'awards', label: 'Awards' },
+  { id: 'resources', label: 'Resources' },
   { id: 'contact', label: 'Contact' }
 ]
 
@@ -43,28 +44,32 @@ function Navigation({ activeSection }) {
           <span className="logo-text">TMR</span>
         </motion.div>
 
+        {/* Centered navigation menu */}
         <div className={`nav-menu ${isOpen ? 'active' : ''}`}>
-          {navItems.map((item) => (
-            <motion.button
-              key={item.id}
-              className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
-              onClick={() => scrollToSection(item.id)}
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {item.label}
-              {activeSection === item.id && (
-                <motion.div
-                  className="nav-indicator"
-                  layoutId="activeSection"
-                  initial={false}
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-            </motion.button>
-          ))}
+          <motion.div className="nav-links-container">
+            {navItems.map((item) => (
+              <motion.button
+                key={item.id}
+                className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
+                onClick={() => scrollToSection(item.id)}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {item.label}
+                {activeSection === item.id && (
+                  <motion.div
+                    className="nav-indicator"
+                    layoutId="activeSection"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </motion.button>
+            ))}
+          </motion.div>
         </div>
 
+        {/* Mobile toggle button */}
         <motion.button
           className="nav-toggle"
           onClick={() => setIsOpen(!isOpen)}
@@ -78,4 +83,3 @@ function Navigation({ activeSection }) {
 }
 
 export default Navigation
-

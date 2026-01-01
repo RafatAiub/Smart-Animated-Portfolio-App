@@ -16,7 +16,9 @@ const Certifications = lazy(() => import('./components/Certifications'))
 const Projects = lazy(() => import('./components/Projects'))
 const Publications = lazy(() => import('./components/Publications'))
 const Awards = lazy(() => import('./components/Awards'))
+const LearningResources = lazy(() => import('./components/LearningResources'))
 const Contact = lazy(() => import('./components/Contact'))
+const Footer = lazy(() => import('./components/Footer'))
 
 function App() {
   const [theme, setTheme] = useState('dark')
@@ -24,7 +26,7 @@ function App() {
 
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'skills', 'experience', 'education', 'certifications', 'projects', 'publications', 'awards', 'contact']
+      const sections = ['home', 'about', 'skills', 'experience', 'education', 'certifications', 'projects', 'publications', 'awards', 'resources', 'contact']
       const scrollPosition = window.scrollY + 200
 
       for (const section of sections) {
@@ -92,11 +94,18 @@ function App() {
               <Awards />
             </section>
             
+            <section id="resources">
+              <LearningResources />
+            </section>
+            
             <section id="contact">
               <Contact />
             </section>
           </Suspense>
         </main>
+        <Suspense fallback={null}>
+          <Footer />
+        </Suspense>
       </div>
     </ThemeProvider>
   )

@@ -112,15 +112,25 @@ function Hero() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            Get In Touch
+            Hire Me / Collaborate
           </motion.a>
           <motion.a
-            href="#projects"
+            href="https://github.com/RafatAiub"
+            target="_blank"
+            rel="noopener noreferrer"
             className="cta-button secondary"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            View My Work
+            View GitHub
+          </motion.a>
+          <motion.a
+            href="#resources"
+            className="cta-button secondary"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Learning Resources
           </motion.a>
         </motion.div>
 

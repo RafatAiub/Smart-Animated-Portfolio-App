@@ -78,8 +78,21 @@ function Contact() {
             transition={{ duration: 0.6 }}
           >
             <p className="contact-intro">
-              I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
+              I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. 
+              Whether you're a startup, enterprise, or individual looking for expert guidance in Full Stack Development, 
+              Cloud Architecture, AI/ML, or Blockchain solutions, let's connect and build something extraordinary together.
             </p>
+            <div className="contact-cta">
+              <h3>Let's Work Together</h3>
+              <p>Available for:</p>
+              <ul>
+                <li>🏢 Enterprise Consulting & Architecture</li>
+                <li>🚀 Startup Technical Leadership</li>
+                <li>💼 Full-Time Senior Positions</li>
+                <li>📚 Technical Training & Workshops</li>
+                <li>🤝 Open Source Contributions</li>
+              </ul>
+            </div>
             <div className="contact-items">
               {contactInfo.map((item, index) => (
                 <motion.a

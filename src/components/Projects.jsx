@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
-import { FaGithub, FaExternalLinkAlt, FaReact, FaNode, FaAws, FaEthereum, FaBrain } from 'react-icons/fa'
+import { FaGithub, FaExternalLinkAlt, FaReact, FaNode, FaAws, FaEthereum, FaBrain, FaBook } from 'react-icons/fa'
+import { projectLinks } from '../data/links'
 
 const projects = [
   {
@@ -44,49 +45,110 @@ function Projects() {
           Featured <span className="gradient-text">Projects</span>
         </motion.h2>
 
+        <motion.p
+          className="section-subtitle"
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2, duration: 0.6 }}
+          style={{ textAlign: 'center', marginBottom: '3rem', opacity: 0.8 }}
+        >
+          Explore my projects with live demos, source code, and comprehensive documentation
+        </motion.p>
+
         <div className="projects-grid">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.name}
-              className="project-card"
-              initial={{ opacity: 0, y: 100, rotateX: -15 }}
-              animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
-              transition={{ delay: index * 0.2, duration: 0.6 }}
-              whileHover={{ y: -10, rotateY: 5 }}
-              style={{ '--project-color': project.color }}
-            >
-              <div className="project-header">
-                <div className="project-icons">
-                  {project.icons.map((icon, i) => (
-                    <span key={i} className="project-icon">{icon}</span>
+          {projects.map((project, index) => {
+            const links = projectLinks[project.name] || {}
+            return (
+              <motion.div
+                key={project.name}
+                className="project-card"
+                initial={{ opacity: 0, y: 100, rotateX: -15 }}
+                animate={inView ? { opacity: 1, y: 0, rotateX: 0 } : {}}
+                transition={{ delay: index * 0.2, duration: 0.6 }}
+                whileHover={{ y: -10, rotateY: 5 }}
+                style={{ '--project-color': project.color }}
+              >
+                <div className="project-header">
+                  <div className="project-icons">
+                    {project.icons.map((icon, i) => (
+                      <span key={i} className="project-icon">{icon}</span>
+                    ))}
+                  </div>
+                  <div className="project-links">
+                    {links.github && (
+                      <motion.a
+                        href={links.github}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.2, rotate: 90 }}
+                        whileTap={{ scale: 0.9 }}
+                        title="View Source Code"
+                      >
+                        <FaGithub />
+                      </motion.a>
+                    )}
+                    {links.demo && (
+                      <motion.a
+                        href={links.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.2, rotate: 90 }}
+                        whileTap={{ scale: 0.9 }}
+                        title="Live Demo"
+                      >
+                        <FaExternalLinkAlt />
+                      </motion.a>
+                    )}
+                    {links.docs && (
+                      <motion.a
+                        href={links.docs}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.2, rotate: 90 }}
+                        whileTap={{ scale: 0.9 }}
+                        title="Documentation"
+                      >
+                        <FaBook />
+                      </motion.a>
+                    )}
+                  </div>
+                </div>
+                <h3>{project.name}</h3>
+                <p>{project.description}</p>
+                <div className="project-tech">
+                  {project.tech.map((tech) => (
+                    <span key={tech} className="tech-tag">{tech}</span>
                   ))}
                 </div>
-                <div className="project-links">
-                  <motion.a
-                    href="#"
-                    whileHover={{ scale: 1.2, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <FaGithub />
-                  </motion.a>
-                  <motion.a
-                    href="#"
-                    whileHover={{ scale: 1.2, rotate: 90 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <FaExternalLinkAlt />
-                  </motion.a>
+                <div className="project-actions">
+                  {links.github && (
+                    <motion.a
+                      href={links.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-button"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <FaGithub /> View Code
+                    </motion.a>
+                  )}
+                  {links.demo && (
+                    <motion.a
+                      href={links.demo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="project-button primary"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <FaExternalLinkAlt /> Live Demo
+                    </motion.a>
+                  )}
                 </div>
-              </div>
-              <h3>{project.name}</h3>
-              <p>{project.description}</p>
-              <div className="project-tech">
-                {project.tech.map((tech) => (
-                  <span key={tech} className="tech-tag">{tech}</span>
-                ))}
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            )
+          })}
         </div>
       </div>
     </section>
@@ -94,4 +156,3 @@ function Projects() {
 }
 
 export default Projects
-
