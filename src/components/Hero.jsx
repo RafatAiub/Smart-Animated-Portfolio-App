@@ -1,51 +1,13 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Sphere, MeshDistortMaterial } from '@react-three/drei'
 import { motion } from 'framer-motion'
 import { FaLinkedin, FaGithub, FaEnvelope, FaPhone } from 'react-icons/fa'
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
-
-function AnimatedSphere() {
-  const meshRef = useRef()
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.3
-    }
-  })
-
-  return (
-    <Sphere ref={meshRef} args={[1, 100, 200]} scale={2.5}>
-      <MeshDistortMaterial
-        color="#6366f1"
-        attach="material"
-        distort={0.5}
-        speed={2}
-        roughness={0}
-        metalness={0.8}
-      />
-    </Sphere>
-  )
-}
-
-function FloatingOrbs() {
-  const orbs = []
-  for (let i = 0; i < 5; i++) {
-    orbs.push(
-      <Sphere key={i} args={[0.1, 32, 32]} position={[
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10,
-        (Math.random() - 0.5) * 10
-      ]}>
-        <meshStandardMaterial color="#8b5cf6" emissive="#8b5cf6" emissiveIntensity={0.5} />
-      </Sphere>
-    )
-  }
-  return <>{orbs}</>
-}
+import { Suspense } from 'react'
+import AdvancedHeroScene from './three/AdvancedHeroScene'
+import { useTheme } from '../hooks/useTheme.jsx'
 
 function Hero() {
+  const { theme } = useTheme()
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -68,13 +30,15 @@ function Hero() {
   return (
     <div className="hero-section">
       <div className="hero-3d-container">
-        <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-          <ambientLight intensity={0.5} />
-          <pointLight position={[10, 10, 10]} intensity={1} />
-          <pointLight position={[-10, -10, -10]} intensity={0.5} color="#8b5cf6" />
-          <AnimatedSphere />
-          <FloatingOrbs />
-          <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+        <Canvas
+          camera={{ position: [0, 0, 8], fov: 75 }}
+          gl={{ antialias: true, alpha: true }}
+          dpr={[1, 2]}
+          performance={{ min: 0.5 }}
+        >
+          <Suspense fallback={null}>
+            <AdvancedHeroScene theme={theme} />
+          </Suspense>
         </Canvas>
       </div>
 
